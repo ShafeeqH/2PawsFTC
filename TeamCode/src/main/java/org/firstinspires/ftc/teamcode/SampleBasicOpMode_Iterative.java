@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
 @Disabled
 public class SampleBasicOpMode_Iterative extends OpMode
 {
-    // Declare OpMode members 123.
+    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
