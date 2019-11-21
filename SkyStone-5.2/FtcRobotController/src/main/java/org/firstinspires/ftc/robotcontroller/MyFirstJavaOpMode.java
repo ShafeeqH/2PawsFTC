@@ -22,8 +22,8 @@ public class MyFirstJavaOpMode extends LinearOpMode {
     @Override
     public void runOpMode() {
        // imu = hardwareMap.get(Gyroscope.class, "imu");
-        motorLeft = hardwareMap.get(DcMotor.class, "NAME");
-        motorRight = hardwareMap.get(DcMotor.class,"NAME");
+        motorLeft = hardwareMap.get(DcMotor.class, "leftWheel");
+        motorRight = hardwareMap.get(DcMotor.class,"rightWheel");
         //digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         //sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         //servoTest = hardwareMap.get(Servo.class, "servoTest");
@@ -35,13 +35,15 @@ public class MyFirstJavaOpMode extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
         // run until the end of the match (driver presses STOP)
-        double tgtPower = 0;
+        double tgtleftMotor;
+        double tgtrightMotor;
         while (opModeIsActive()) {
-            tgtPower = -this.gamepad1.left_stick_y;
-            tgtPower = -this.gamepad1.right_stick_y;
-            motorLeft.setPower(tgtPower);
-            motorRight.setPower(tgtPower);
-            telemetry.addData("Target Power",tgtPower);
+            tgtleftMotor = -this.gamepad1.left_stick_y;
+             tgtrightMotor  = -this.gamepad1.right_stick_y;
+            motorLeft.setPower(tgtleftMotor);
+            motorRight.setPower(tgtrightMotor);
+            telemetry.addData("Target power", "target left");
+            telemetry.addData("Target power"," target right");
             telemetry.addData("Motor Power", motorLeft.getPower());
             telemetry.addData("Motor Power", motorRight.getPower());
             telemetry.addData("Status", "Running");

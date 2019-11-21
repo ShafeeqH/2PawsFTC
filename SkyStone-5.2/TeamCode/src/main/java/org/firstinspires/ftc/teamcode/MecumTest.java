@@ -30,10 +30,10 @@ public class MecumTest extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        leftFrontMotor = hardwareMap.dcMotor.get("leftFront");
-        rightFrontMotor = hardwareMap.dcMotor.get("rightFront");
-        leftRearMotor = hardwareMap.dcMotor.get("leftRear");
-        rightRearMotor = hardwareMap.dcMotor.get("rightRear");
+        leftFrontMotor = hardwareMap.dcMotor.get("LF");
+        rightFrontMotor = hardwareMap.dcMotor.get("RF");
+        leftRearMotor = hardwareMap.dcMotor.get("LR");
+        rightRearMotor = hardwareMap.dcMotor.get("RR");
 
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);

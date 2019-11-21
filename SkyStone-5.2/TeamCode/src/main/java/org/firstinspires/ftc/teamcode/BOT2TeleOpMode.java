@@ -24,8 +24,8 @@ public class BOT2TeleOpMode extends LinearOpMode {
     @Override
     public void runOpMode() {
         // imu = hardwareMap.get(Gyroscope.class, "imu");
-        DcMotor motorLeft = hardwareMap.get(DcMotor.class, "motorLeft");
-        DcMotor motorRight = hardwareMap.get(DcMotor.class, "motorRight");
+        DcMotor motorLeft = hardwareMap.get(DcMotor.class, "leftWheel");
+        DcMotor motorRight = hardwareMap.get(DcMotor.class, "rightWheel");
         motorLeft.setDirection(DcMotor.Direction.FORWARD);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
 
