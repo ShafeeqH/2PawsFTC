@@ -2,58 +2,103 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 
 public class BOT2TeleOpMode extends LinearOpMode {
- //   private Gyroscope imu;
+    //private Gyroscope imu;
  //   private DigitalChannel digitalTouch;
- //   private DistanceSensor sendsorColorRange;
- //   private Servo servoTest;
+ //   private DistanceSensor sensorColorRange;
  //   private DistanceSensor sensorColorRange;
 
-    public BOT2TeleOpMode() {
-    }
+ //   double  gripPosition,contPower;
+ //   double  MIN_GRIP_POSITION = 0, MAX_GRIP_POSITION = 1, GRIP_POSITION_STEP = 0.01;
+    double  ARM_POWER = .25;
+    int     MIN_ARM_POSITION = 10,MAX_ARM_POSITION = 600,INITIAL_ARM_POSITION = 25, ARM_POSITION_STEP = 5;
 
     @Override
     public void runOpMode() {
+        // Initiliaze Values
+        double leftPower;  // Left Wheel Power
+        double rightPower; // Right Wheel Power
+        double gripPower;  // Grip Wheel Power
+        int armPosition = INITIAL_ARM_POSITION;         //  Set the Arm Position to the Initial Position
+
+
         // imu = hardwareMap.get(Gyroscope.class, "imu");
         DcMotor motorLeft = hardwareMap.get(DcMotor.class, "leftWheel");
         DcMotor motorRight = hardwareMap.get(DcMotor.class, "rightWheel");
-        motorLeft.setDirection(DcMotor.Direction.FORWARD);
-        motorRight.setDirection(DcMotor.Direction.REVERSE);
-
+        DcMotor armMotor = hardwareMap.get(DcMotor.class,"armMotor");
+        CRServo gripServo = hardwareMap.get(CRServo.class, "pinchServo");
         //digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         //sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
-        //servoTest = hardwareMap.get(Servo.class, "servoTest");
+
+        // Set the directions for all Motors
+        motorLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorRight.setDirection(DcMotor.Direction.FORWARD);
+        armMotor.setDirection((DcMotor.Direction.FORWARD));
+
+        // Set arm Motor to use Encoder and reset the Encoder
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set the Power for the arm Motor
+        armMotor.setPower(ARM_POWER);
+
         telemetry.addData("Status", "Initialized");
-        //telemetry.update();
+        telemetry.update();
+
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         telemetry.addData("Status", "Running");
         telemetry.update();
+
         // run until the end of the match (driver presses STOP)
-        double leftPower;
-        double rightPower;
-        while (opModeIsActive()) {
-            leftPower = -this.gamepad1.left_stick_y;
-            rightPower = -this.gamepad1.right_stick_y;
+        while (opModeIsActive()){
+            // get left and right wheel power values from the y sticks
+            leftPower = -gamepad1.left_stick_y;
+            rightPower = -gamepad1.right_stick_y;
+
+            // Assign the Values to run the Wheel Motors
             motorLeft.setPower(leftPower);
             motorRight.setPower(rightPower);
-            telemetry.addData("Taget", "left (%.2f), right (%.2f)", leftPower, rightPower);
+
+            // Get the Values for the Grip Power from the DPAD Left and Right
+            if (gamepad1.dpad_left)
+                gripPower = .20;
+            else if (gamepad1.dpad_right)
+                gripPower = -.20;
+            else
+                gripPower = 0.0;
+            //   if (gamepad1.y && gripPosition < MAX_GRIP_POSITION) gripPosition = gripPosition + GRIP_POSITION_STEP;
+            //   if (gamepad1.a && gripPosition > MIN_GRIP_POSITION) gripPosition = gripPosition - GRIP_POSITION_STEP;
+            // gripServo.setPosition(Range.clip(gripPosition, MIN_POSITION, MAX_POSITION));
+            gripServo.setPower(gripPower);
+
+
+            if (gamepad1.dpad_up && armMotor.getCurrentPosition() < MAX_ARM_POSITION) armPosition = armPosition + ARM_POSITION_STEP;
+            if (gamepad1.dpad_down && armMotor.getCurrentPosition() > MIN_ARM_POSITION) armPosition = armPosition - ARM_POSITION_STEP;
+            armMotor.setTargetPosition(armPosition);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            telemetry.addData("Encoder Position", armMotor.getCurrentPosition());
+            telemetry.addData("Wheel Taget", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Motor", "left (%.2f), right (%.2f)", motorLeft.getPower(), motorRight.getPower());
+            telemetry.addData("Arm Target", "TGT (%04d), POS (%4d)", armPosition, armMotor.getCurrentPosition());
             telemetry.addData("Status", "Running");
             telemetry.update();
+            idle();
 
         }
     }
-
-
 }

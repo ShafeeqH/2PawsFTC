@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
+@TeleOp
 
 public class ServoTest extends LinearOpMode {
 
@@ -15,7 +18,7 @@ public class ServoTest extends LinearOpMode {
     @Override
     public void runOpMode()
     {
-        gripServo = hardwareMap.servo.get("pinchservo");
+        gripServo = hardwareMap.servo.get("pinchServo");
     //    armMotor = hardwareMap.dcMotor.get("armMotor");
 
     //    int armPosition = armMotor.getCurrentPosition()
@@ -23,6 +26,7 @@ public class ServoTest extends LinearOpMode {
         telemetry.update();
 
         gripPosition = MAX_POSITION;
+        waitForStart();
 
         while (opModeIsActive())
         {
