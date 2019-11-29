@@ -44,8 +44,8 @@ public class BOT1TeleOpMode extends LinearOpMode {
         leftRearMotor = hardwareMap.get(DcMotor.class,"LR");
         rightRearMotor = hardwareMap.get(DcMotor.class,"RR");
         armMotor = hardwareMap.get(DcMotor.class,"ARM");
-        leftIntakeMotor = hardwareMap.get(DcMotor.class, "leftWheel");
-        rightIntakeMotor = hardwareMap.get (DcMotor.class, "rightWheel");
+        leftIntakeMotor = hardwareMap.get(DcMotor.class, "LW");
+        rightIntakeMotor = hardwareMap.get (DcMotor.class, "RW");
         gripServo = hardwareMap.get(Servo.class, "PINCH");
         wristServo = hardwareMap.get(Servo.class, "WRIST");
         pushServo = hardwareMap.get(Servo.class, "PUSH");
