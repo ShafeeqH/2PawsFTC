@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -28,9 +29,9 @@ public class BOT1TeleOpMode extends LinearOpMode {
     double X1, Y1, X2, Y2;
     double rfPower, lfPower, rrPower, lrPower;
     double  ARM_POWER = .25;
-    int     MIN_ARM_POSITION = 10,MAX_ARM_POSITION = 600,INITIAL_ARM_POSITION = 25, ARM_POSITION_STEP = 5;
+    int     MIN_ARM_POSITION = -800,MAX_ARM_POSITION = 0,INITIAL_ARM_POSITION = 0, ARM_POSITION_STEP = 5, SAFE_ARM_POSITION = -450;
     double  gripPosition, wristPosition, pushPosition;
-    double  GRIP_MIN_POSITION = 0, GRIP_MAX_POSITION = 1, WRIST_MIN_POSITION = 0, WRIST_MAX_POSITION = 1, PUSH_MIN_POSITION =0, PUSH_MAX_POSITION =1;
+    double  GRIP_MIN_POSITION = 0.40, GRIP_MAX_POSITION = 1, WRIST_MIN_POSITION = 0, WRIST_MAX_POSITION = 1, PUSH_MIN_POSITION =0, PUSH_MAX_POSITION =0.4;
 
     @Override
     public void runOpMode() {
@@ -55,7 +56,7 @@ public class BOT1TeleOpMode extends LinearOpMode {
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
         rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
-        armMotor.setDirection((DcMotor.Direction.FORWARD));
+        armMotor.setDirection((DcMotor.Direction.REVERSE));
         leftIntakeMotor.setDirection(DcMotor.Direction.REVERSE);
         rightIntakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
@@ -64,13 +65,23 @@ public class BOT1TeleOpMode extends LinearOpMode {
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
 
         // Set the Power for the arm Motor
+       // int armPosition = INITIAL_ARM_POSITION;         //  Set the Arm Position to the Initial Position
+
         armMotor.setPower(ARM_POWER);
-        gripPosition = GRIP_MAX_POSITION;
-        wristPosition = WRIST_MIN_POSITION;
+     //   INITIAL_ARM_POSITION = armMotor.getCurrentPosition();
+     //   armMotor.setTargetPosition(INITIAL_ARM_POSITION);
+     //   armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armPosition = INITIAL_ARM_POSITION;
+        armMotor.setTargetPosition(INITIAL_ARM_POSITION);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        gripPosition = GRIP_MIN_POSITION;
+        wristPosition = WRIST_MAX_POSITION;
         pushPosition = PUSH_MIN_POSITION;
 
         waitForStart();
@@ -89,7 +100,7 @@ public class BOT1TeleOpMode extends LinearOpMode {
             X1 = gamepad1.left_stick_x * joyScale;
            // Y2 = -gamepad1.right_stick_y * joyScale;
             X2 = gamepad1.right_stick_x * joyScale;
-           // X2 = gamepad1.right_trigger * joyScale;
+
 
             // Forward/back movement
             lfPower += Y1;
@@ -122,8 +133,8 @@ public class BOT1TeleOpMode extends LinearOpMode {
             rightRearMotor.setPower(rrPower);
 
             // Assign Position Value to the Arm Motor
-            if (gamepad1.dpad_up && armMotor.getCurrentPosition() < MAX_ARM_POSITION) armPosition = armPosition + ARM_POSITION_STEP;
-            if (gamepad1.dpad_down && armMotor.getCurrentPosition() > MIN_ARM_POSITION) armPosition = armPosition - ARM_POSITION_STEP;
+            if (gamepad1.dpad_down && armMotor.getCurrentPosition() < MAX_ARM_POSITION) armPosition = armPosition + ARM_POSITION_STEP;
+            if (gamepad1.dpad_up && armMotor.getCurrentPosition() > MIN_ARM_POSITION) armPosition = armPosition - ARM_POSITION_STEP;
             armMotor.setTargetPosition(armPosition);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -147,10 +158,37 @@ public class BOT1TeleOpMode extends LinearOpMode {
             if (gamepad1.left_bumper && pushPosition > PUSH_MIN_POSITION) pushPosition = pushPosition - .01;
             pushServo.setPosition(Range.clip(pushPosition, PUSH_MIN_POSITION, PUSH_MAX_POSITION));
 
-            telemetry.addData("Stick", "Y1 (%.2f), X2 (%.2f)",Y1,X2);
-            telemetry.addData("Front", "left (%.2f), right (%.2f)", lfPower, rfPower);
-            telemetry.addData("Rear", "left (%.2f), right (%.2f)", lrPower, rrPower);
+            //Reset ARM
+            if (gamepad1.b){
+                armPosition = SAFE_ARM_POSITION;
+                armMotor.setTargetPosition(armPosition);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+                // Wait until the ARM is clear
+                while (armMotor.isBusy()) {
+
+                    sleep(1000);
+                }
+                // Reset all Servos to Home
+                gripPosition = GRIP_MIN_POSITION;
+                wristPosition = WRIST_MAX_POSITION;
+                pushPosition = PUSH_MIN_POSITION;
+                gripServo.setPosition(Range.clip(gripPosition, GRIP_MIN_POSITION, GRIP_MAX_POSITION));
+                wristServo.setPosition(Range.clip(wristPosition, WRIST_MIN_POSITION, WRIST_MAX_POSITION));
+                pushServo.setPosition(Range.clip(pushPosition, PUSH_MIN_POSITION, PUSH_MAX_POSITION));
+
+                sleep(1000);
+
+                armPosition = INITIAL_ARM_POSITION;
+             //   armMotor.setTargetPosition(INITIAL_ARM_POSITION);
+             //   armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+            telemetry.addData("POS","ENC (%04d), ARM (%04d)", armMotor.getCurrentPosition(),armPosition);
+            telemetry.addData("Stick", "grip (%.2f), push (%.2f) wrist (%.2f)", gripServo.getPosition(),pushServo.getPosition(),wristServo.getPosition());
+          //  telemetry.addData("Front", "left (%.2f), right (%.2f)", lfPower, rfPower);
+          //  telemetry.addData("Rear", "left (%.2f), right (%.2f)", lrPower, rrPower);
+           // telemetry.update();
         }
 
     }

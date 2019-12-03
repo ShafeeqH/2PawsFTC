@@ -4,12 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Gyroscope;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 
@@ -47,11 +41,14 @@ public class BOT2TeleOpMode extends LinearOpMode {
         armMotor.setDirection((DcMotor.Direction.FORWARD));
 
         // Set arm Motor to use Encoder and reset the Encoder
-        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       // armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Set the Power for the arm Motor
         armMotor.setPower(ARM_POWER);
+        armPosition = INITIAL_ARM_POSITION;
+        armMotor.setTargetPosition(INITIAL_ARM_POSITION);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -80,9 +77,7 @@ public class BOT2TeleOpMode extends LinearOpMode {
                 gripPower = -.20;
             else
                 gripPower = 0.0;
-            //   if (gamepad1.y && gripPosition < MAX_GRIP_POSITION) gripPosition = gripPosition + GRIP_POSITION_STEP;
-            //   if (gamepad1.a && gripPosition > MIN_GRIP_POSITION) gripPosition = gripPosition - GRIP_POSITION_STEP;
-            // gripServo.setPosition(Range.clip(gripPosition, MIN_POSITION, MAX_POSITION));
+
             gripServo.setPower(gripPower);
 
 
