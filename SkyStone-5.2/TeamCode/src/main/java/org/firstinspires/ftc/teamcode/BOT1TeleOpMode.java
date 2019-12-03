@@ -96,7 +96,7 @@ public class BOT1TeleOpMode extends LinearOpMode {
             rightIntakeMotor.setPower(0);
             leftIntakeMotor.setPower(0);
 
-            Y1 = gamepad1.right_stick_y * joyScale; // invert so up is positive
+            Y1 = gamepad1.right_stick_y * joyScale;
             X1 = gamepad1.right_stick_x * joyScale;
            // Y2 = -gamepad1.right_stick_y * joyScale;
             X2 = gamepad1.left_stick_x * joyScale;
