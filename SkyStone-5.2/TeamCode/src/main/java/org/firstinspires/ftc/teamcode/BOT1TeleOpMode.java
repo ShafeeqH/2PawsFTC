@@ -28,7 +28,7 @@ public class BOT1TeleOpMode extends LinearOpMode {
     double motorMax = 0.6;
     double X1, Y1, X2, Y2;
     double rfPower, lfPower, rrPower, lrPower;
-    double  ARM_POWER = .25;
+    double  ARM_POWER = .40;
     int     MIN_ARM_POSITION = -800,MAX_ARM_POSITION = 0,INITIAL_ARM_POSITION = 0, ARM_POSITION_STEP = 5, SAFE_ARM_POSITION = -450;
     double  gripPosition, wristPosition, pushPosition;
     double  GRIP_MIN_POSITION = 0.40, GRIP_MAX_POSITION = 1, WRIST_MIN_POSITION = 0, WRIST_MAX_POSITION = 1, PUSH_MIN_POSITION =0, PUSH_MAX_POSITION =0.4;
@@ -151,8 +151,8 @@ public class BOT1TeleOpMode extends LinearOpMode {
             gripServo.setPosition(Range.clip(gripPosition, GRIP_MIN_POSITION, GRIP_MAX_POSITION));
 
             // Assign Position Value to the Wrist Servo
-            if (gamepad1.dpad_left && wristPosition < WRIST_MAX_POSITION) wristPosition = wristPosition + .01;
-            if (gamepad1.dpad_right && wristPosition > WRIST_MIN_POSITION) wristPosition = wristPosition - .01;
+            if (gamepad1.dpad_right && wristPosition < WRIST_MAX_POSITION) wristPosition = wristPosition + .01;
+            if (gamepad1.dpad_left && wristPosition > WRIST_MIN_POSITION) wristPosition = wristPosition - .01;
             wristServo.setPosition(Range.clip(wristPosition, WRIST_MIN_POSITION, WRIST_MAX_POSITION));
 
             // Assign Position Value to the Push Servo
@@ -169,7 +169,7 @@ public class BOT1TeleOpMode extends LinearOpMode {
                 // Wait until the ARM is clear
                 while (armMotor.isBusy()) {
 
-                    sleep(1000);
+                    sleep(500);
                 }
                 // Reset all Servos to Home
                 gripPosition = GRIP_MIN_POSITION;
