@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -25,11 +24,11 @@ public class BOT1TeleOpMode extends LinearOpMode {
 
     // Declare Variables and initial Values
     double joyScale = 0.5;
-    double motorMax = 0.6;
+    double motorMax = 0.9;
     double X1, Y1, X2, Y2;
     double rfPower, lfPower, rrPower, lrPower;
     double  ARM_POWER = .40;
-    int     MIN_ARM_POSITION = -800,MAX_ARM_POSITION = 0,INITIAL_ARM_POSITION = 0, ARM_POSITION_STEP = 5, SAFE_ARM_POSITION = -450;
+    int     MIN_ARM_POSITION = -800,MAX_ARM_POSITION = 10,INITIAL_ARM_POSITION = 10, ARM_POSITION_STEP = 5, SAFE_ARM_POSITION = -450;
     double  gripPosition, wristPosition, pushPosition;
     double  GRIP_MIN_POSITION = 0.40, GRIP_MAX_POSITION = 1, WRIST_MIN_POSITION = 0, WRIST_MAX_POSITION = 1, PUSH_MIN_POSITION =0, PUSH_MAX_POSITION =0.4;
 
@@ -135,33 +134,33 @@ public class BOT1TeleOpMode extends LinearOpMode {
             rightRearMotor.setPower(rrPower);
 
             // Assign Position Value to the Arm Motor
-            if (gamepad1.dpad_down && armMotor.getCurrentPosition() < MAX_ARM_POSITION) armPosition = armPosition + ARM_POSITION_STEP;
-            if (gamepad1.dpad_up && armMotor.getCurrentPosition() > MIN_ARM_POSITION) armPosition = armPosition - ARM_POSITION_STEP;
+            if (gamepad2.dpad_down && armMotor.getCurrentPosition() < MAX_ARM_POSITION) armPosition = armPosition + ARM_POSITION_STEP;
+            if (gamepad2.dpad_up && armMotor.getCurrentPosition() > MIN_ARM_POSITION) armPosition = armPosition - ARM_POSITION_STEP;
             armMotor.setTargetPosition(armPosition);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // Check to see if Intake Wheels needs to spin
-            if (gamepad1.x){
+            if (gamepad2.x){
                 rightIntakeMotor.setPower(1);
                 leftIntakeMotor.setPower(1);
             }
             // Assign Position Value to the Grip Servo
-            if (gamepad1.y && gripPosition < GRIP_MAX_POSITION) gripPosition = gripPosition + .01;
-            if (gamepad1.a && gripPosition > GRIP_MIN_POSITION) gripPosition = gripPosition - .01;
+            if (gamepad2.y && gripPosition < GRIP_MAX_POSITION) gripPosition = gripPosition + .01;
+            if (gamepad2.a && gripPosition > GRIP_MIN_POSITION) gripPosition = gripPosition - .01;
             gripServo.setPosition(Range.clip(gripPosition, GRIP_MIN_POSITION, GRIP_MAX_POSITION));
 
             // Assign Position Value to the Wrist Servo
-            if (gamepad1.dpad_right && wristPosition < WRIST_MAX_POSITION) wristPosition = wristPosition + .01;
-            if (gamepad1.dpad_left && wristPosition > WRIST_MIN_POSITION) wristPosition = wristPosition - .01;
+            if (gamepad2.dpad_right && wristPosition < WRIST_MAX_POSITION) wristPosition = wristPosition + .01;
+            if (gamepad2.dpad_left && wristPosition > WRIST_MIN_POSITION) wristPosition = wristPosition - .01;
             wristServo.setPosition(Range.clip(wristPosition, WRIST_MIN_POSITION, WRIST_MAX_POSITION));
 
             // Assign Position Value to the Push Servo
-            if (gamepad1.right_bumper && pushPosition < PUSH_MAX_POSITION) pushPosition = pushPosition + .01;
-            if (gamepad1.left_bumper && pushPosition > PUSH_MIN_POSITION) pushPosition = pushPosition - .01;
+            if (gamepad2.right_bumper && pushPosition < PUSH_MAX_POSITION) pushPosition = pushPosition + .01;
+            if (gamepad2.left_bumper && pushPosition > PUSH_MIN_POSITION) pushPosition = pushPosition - .01;
             pushServo.setPosition(Range.clip(pushPosition, PUSH_MIN_POSITION, PUSH_MAX_POSITION));
 
             //Reset ARM
-            if (gamepad1.b){
+            if (gamepad2.b){
                 armPosition = SAFE_ARM_POSITION;
                 armMotor.setTargetPosition(armPosition);
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
