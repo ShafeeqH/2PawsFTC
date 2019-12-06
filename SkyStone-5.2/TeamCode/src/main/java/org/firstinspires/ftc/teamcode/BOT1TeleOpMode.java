@@ -141,8 +141,12 @@ public class BOT1TeleOpMode extends LinearOpMode {
 
             // Check to see if Intake Wheels needs to spin
             if (gamepad2.x){
-                rightIntakeMotor.setPower(1);
-                leftIntakeMotor.setPower(1);
+                rightIntakeMotor.setPower(0.5);
+                leftIntakeMotor.setPower(0.5);
+            }
+            if (gamepad2.b){
+                rightIntakeMotor.setPower(-0.5);
+                leftIntakeMotor.setPower(-0.5);
             }
             // Assign Position Value to the Grip Servo
             if (gamepad2.y && gripPosition < GRIP_MAX_POSITION) gripPosition = gripPosition + .01;
@@ -160,7 +164,7 @@ public class BOT1TeleOpMode extends LinearOpMode {
             pushServo.setPosition(Range.clip(pushPosition, PUSH_MIN_POSITION, PUSH_MAX_POSITION));
 
             //Reset ARM
-            if (gamepad2.b){
+            if (gamepad1.b){
                 armPosition = SAFE_ARM_POSITION;
                 armMotor.setTargetPosition(armPosition);
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
