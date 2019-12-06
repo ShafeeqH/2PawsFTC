@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 @Autonomous
-@Disabled
-public class BOT1AutoOpMode extends LinearOpMode {
+//@Disabled
+
+public class BOT1Auto_Right extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor leftFrontMotor = null;
     DcMotor rightFrontMotor = null;

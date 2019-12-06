@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 @Autonomous
-@Disabled
-public class BOT1AutoOpMode extends LinearOpMode {
+//@Disabled
+public class BOT1Auto_Left extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor leftFrontMotor = null;
     DcMotor rightFrontMotor = null;
@@ -101,7 +99,7 @@ public class BOT1AutoOpMode extends LinearOpMode {
             leftIntakeMotor.setPower(0);
 
             autoDrive(0.9,1,1.5);
-            autoDrive(0.9,3,1.0);
+            autoDrive(0.9,2,1.0);
             autoDrive(0.9,1,1.1);
             //autoDrive(0.9,4,5);
 /**
