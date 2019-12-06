@@ -88,7 +88,7 @@ public class BOT1AutoOpMode extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        while (opModeIsActive()) {
+       // while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
 
@@ -100,8 +100,10 @@ public class BOT1AutoOpMode extends LinearOpMode {
             rightIntakeMotor.setPower(0);
             leftIntakeMotor.setPower(0);
 
-            autoDrive(0.9,1,5);
-            autoDrive(0.9,2,5);
+            autoDrive(0.9,1,1.5);
+            autoDrive(0.9,3,1.0);
+            autoDrive(0.9,1,1.1);
+            //autoDrive(0.9,4,5);
 /**
             // Assign Position Value to the Arm Motor
             if (gamepad2.dpad_down && armMotor.getCurrentPosition() < MAX_ARM_POSITION)
@@ -166,7 +168,7 @@ public class BOT1AutoOpMode extends LinearOpMode {
             //  telemetry.addData("Front", "left (%.2f), right (%.2f)", lfPower, rfPower);
             //  telemetry.addData("Rear", "left (%.2f), right (%.2f)", lrPower, rrPower);
             // telemetry.update();
-        }
+      //  }
 
     }
         public void autoDrive ( double speed,
@@ -175,28 +177,28 @@ public class BOT1AutoOpMode extends LinearOpMode {
 
         if (direction == 1) {
             // Forward/back movement
-            lfPower = speed;
-            rfPower = speed;
-            lrPower = speed;
-            rrPower = speed;
+            lfPower = -speed;
+            rfPower = -speed;
+            lrPower = -speed;
+            rrPower = -speed;
         } else if (direction == 2) {
             // Side to side movement Left
             lfPower = speed;
             rfPower = -speed;
-            lrPower = -speed;
-            rrPower = speed;
+            lrPower = speed;
+            rrPower = -speed;
             } else if (direction == 3){
             // Side to side movement Right
             lfPower = -speed;
             rfPower = speed;
-            lrPower = speed;
-            rrPower = -speed;
+            lrPower = -speed;
+            rrPower = speed;
         } else if (direction == 4){
             // Back movement
-            lfPower = -speed;
-            rfPower = -speed;
-            lrPower = -speed;
-            rrPower = -speed;
+            lfPower = speed;
+            rfPower = speed;
+            lrPower = speed;
+            rrPower = speed;
         }
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < timeoutS)){
