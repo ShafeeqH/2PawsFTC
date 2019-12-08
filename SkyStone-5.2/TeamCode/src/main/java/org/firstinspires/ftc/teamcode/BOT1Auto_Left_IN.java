@@ -98,7 +98,7 @@ public class BOT1Auto_Left_IN extends LinearOpMode {
             rightIntakeMotor.setPower(0);
             leftIntakeMotor.setPower(0);
 
-            autoDrive(0.9,1,0.1k);
+            autoDrive(0.9,1,0.1);
             autoDrive(0.9,2,1.0);
             autoDrive(0.9,1,1.1);
             //autoDrive(0.9,4,5);
