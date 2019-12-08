@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
 //@Disabled
-public class BOT1Auto_Left extends LinearOpMode {
+
+public class BOT1Auto_Right_IN extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor leftFrontMotor = null;
     DcMotor rightFrontMotor = null;
@@ -98,8 +99,8 @@ public class BOT1Auto_Left extends LinearOpMode {
             rightIntakeMotor.setPower(0);
             leftIntakeMotor.setPower(0);
 
-            autoDrive(0.9,1,1.5);
-            autoDrive(0.9,2,1.0);
+            autoDrive(0.9,1,0.1);
+            autoDrive(0.9,3,1.0);
             autoDrive(0.9,1,1.1);
             //autoDrive(0.9,4,5);
 /**

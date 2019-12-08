@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous
 //@Disabled
 
-public class BOT1Auto_Right extends LinearOpMode {
+public class BOT1Auto_Right_OUT extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor leftFrontMotor = null;
     DcMotor rightFrontMotor = null;
